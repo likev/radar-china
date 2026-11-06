@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="description" content="全国雷达拼图 - 气象专业版">
+
+	<title>全国雷达拼图 (Professional Meteorological Mosaic)</title>
+	<script src="/gif.js"></script>
+
+</head>
+
+<body>
+	<div class="app-container">
+		<!-- Dynamic App Header -->
+		<header class="app-header">
+			<div class="logo-area">
+				<span class="pulse-dot live-indicator active" id="live-indicator"></span>
+				<h1>全国雷达拼图</h1>
+			</div>
+			<div class="header-status">
+				<span class="status-label">当前基准时间:</span>
+				<span class="status-time" id="display-time">-</span>
+			</div>
+		</header>
+
+		<!-- Main Workspace Grid -->
+		<main class="app-main">
+			<div class="map-view-container">
+				<!-- Mobile-friendly quick selector lists -->
+				<div class="region-selector-container">
+					<h3>快速查看区域:</h3>
+					<div class="region-buttons">
+						<button class="region-btn" data-part="part1">西北</button>
+						<button class="region-btn" data-part="part2">华北</button>
+						<button class="region-btn" data-part="part3">东北</button>
+						<button class="region-btn" data-part="part4">西南</button>
+						<button class="region-btn" data-part="part5">华中</button>
+						<button class="region-btn" data-part="part6">华东</button>
+						<button class="region-btn" data-part="part7">华南</button>
+					</div>
+				</div>
+
+				<!-- Scaled Mosaic Map Wrap -->
+				<div id="map-wrapper">
+					<div id='country'>
+						<div class='radarPart part1' data-name="西北"><img data-rel="#large-overlay" src="#" alt="Northwest China"></div>
+						<div class='radarPart part2' data-name="华北"><img data-rel="#large-overlay" src="#" alt="North China"></div>
+						<div class='radarPart part3' data-name="东北"><img data-rel="#large-overlay" src="#" alt="Northeast China"></div>
+						<div class='radarPart part4' data-name="西南"><img data-rel="#large-overlay" src="#" alt="Southwest China"></div>
+						<div class='radarPart part5' data-name="华中"><img data-rel="#large-overlay" src="#" alt="Central China"></div>
+						<div class='radarPart part6' data-name="华东"><img data-rel="#large-overlay" src="#" alt="East China"></div>
+						<div class='radarPart part7' data-name="华南"><img data-rel="#large-overlay" src="#" alt="South China"></div>
+					</div>
+				</div>
+				<script>
+					(function(){
+						var el = document.getElementById('map-wrapper');
+						if (el && el.clientWidth > 0) {
+							el.style.setProperty('--map-scale', el.clientWidth / 1432);
+						}
+					})();
+				</script>
+			</div>
+
+			<!-- Secondary Sidebar Details -->
+			<aside class="sidebar-container">
+				<!-- Intensity Legend -->
+				<div class="legend-panel card">
+					<h3>雷达回波强度 (dBZ)</h3>
+					<div class="legend-scale">
+						<div class="legend-item" style="background-color: #01a0f6;"><span class="dbz-label">10</span></div>
+						<div class="legend-item" style="background-color: #00ecf6;"><span class="dbz-label">15</span></div>
+						<div class="legend-item" style="background-color: #00a000;"><span class="dbz-label">20</span></div>
+						<div class="legend-item" style="background-color: #00e800;"><span class="dbz-label">25</span></div>
+						<div class="legend-item" style="background-color: #ffff00;"><span class="dbz-label">30</span></div>
+						<div class="legend-item" style="background-color: #e7c000;"><span class="dbz-label">35</span></div>
+						<div class="legend-item" style="background-color: #ff9000;"><span class="dbz-label">40</span></div>
+						<div class="legend-item" style="background-color: #ff0000;"><span class="dbz-label">45</span></div>
+						<div class="legend-item" style="background-color: #d60000;"><span class="dbz-label">50</span></div>
+						<div class="legend-item" style="background-color: #c00000;"><span class="dbz-label">55</span></div>
+						<div class="legend-item" style="background-color: #ff00f0;"><span class="dbz-label">60</span></div>
+						<div class="legend-item" style="background-color: #9600b4;"><span class="dbz-label">65</span></div>
+						<div class="legend-item" style="background-color: #ad90f0;"><span class="dbz-label">70+</span></div>
+					</div>
+					<div class="legend-description">
+						<div class="desc-item"><span class="color-dot green"></span><span>10-20: 阴天/小雨</span></div>
+						<div class="desc-item"><span class="color-dot yellow"></span><span>25-35: 降雨/中雨</span></div>
+						<div class="desc-item"><span class="color-dot red"></span><span>40-50: 大雨/雷雨</span></div>
+						<div class="desc-item"><span class="color-dot purple"></span><span>>55: 冰雹/强对流</span></div>
+					</div>
+				</div>
+				
+				<!-- Usage Instructions Info -->
+				<div class="info-panel card">
+					<h3>操作指南</h3>
+					<ul>
+						<li>点击/轻触地图对应区域，可打开区域高精动态雷达回波图 (10帧时间线循环播放)。</li>
+						<li>在弹出的动态播放器中，支持使用鼠标滚轮/双指捏合进行缩放，并可按住拖拽移动视口。</li>
+						<li>开启自动更新后，系统将每2分钟自动检测并加载最新雷达拼图。</li>
+					</ul>
+				</div>
+			</aside>
+		</main>
+
+		<!-- Bottom Floating Controller Dashboard -->
+		<footer class="app-footer">
+			<div id="control">
+				<div class="control-row">
+					<div class="input-group ios-switch-container">
+						<span class="label-text">自动更新</span>
+						<label class="switch">
+							<input type='checkbox' id='auto-update' checked='checked'>
+							<span class="slider round"></span>
+						</label>
+					</div>
+
+					<div class="input-group source-switch-container">
+						<span class="label-text">数据源:</span>
+						<div class="segmented-toggle" id="source-toggle">
+							<button type="button" class="toggle-option" data-value="tianqitu">pi-weather</button>
+							<button type="button" class="toggle-option active" data-value="nmc">nmc-cn</button>
+						</div>
+					</div>
+					
+					<div class="input-group time-input-container">
+						<label for='radartime'>基准时间:</label>
+						<div class="input-with-actions">
+							<input id='radartime' type="text" placeholder="YYYY-MM-DD HH:MM">
+							<button id='view-radar' title="查看所选时间图片">查看</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-row navigation-buttons">
+					<button id='view-back' class="control-btn" title="后退 6分钟"><span class="icon">◀</span> 后退</button>
+					<button id='view-now' class="control-btn primary-btn" title="查看最新雷达图"><span class="icon">🔄</span> 最新</button>
+					<button id='view-forward' class="control-btn" title="前进 6分钟">前进 <span class="icon">▶</span></button>
+				</div>
+			</div>
+		</footer>
+	</div>
+
+	<!-- Modal Media Player overlay -->
+	<div class="simple_overlay" id="large-overlay">
+		<button class="close" title="Close Overlay">×</button>
+		
+		<!-- Top Mode Toolbar -->
+		<div class="mode-toolbar">
+			<div class="loop-period-group" id="loop-period-group">
+				<span class="toolbar-label">时长:</span>
+				<button class="loop-period-btn active" data-hours="1" title="播放 1小时 降雨演变">1小时</button>
+				<button class="loop-period-btn" data-hours="2" title="播放 2小时 降雨演变">2小时</button>
+				<button class="loop-period-btn" data-hours="3" title="播放 3小时 降雨演变">3小时</button>
+				<button class="loop-period-btn" data-hours="4" title="播放 4小时 降雨演变">4小时</button>
+				<button class="loop-period-btn" data-hours="5" title="播放 5小时 降雨演变">5小时</button>
+			</div>
+			<div class="mode-btn-group">
+				<button class="mode-btn active" data-mode="single" title="单图显示模式">单图显示</button>
+				<button class="mode-btn" data-mode="split" title="对比降雨增强/减弱趋势">差值双屏</button>
+				<button class="mode-btn" data-mode="diff" title="仅显示降雨增强/减弱差值图">仅差值图</button>
+			</div>
+			<div class="interval-select-group" id="interval-select-group" style="display: none;">
+				<span class="toolbar-label">对比间隔:</span>
+				<button class="interval-btn active" data-step="1" title="对比 6分钟 前">6分钟</button>
+				<button class="interval-btn" data-step="2" title="对比 12分钟 前">12分钟</button>
+				<button class="interval-btn" data-step="3" title="对比 18分钟 前">18分钟</button>
+				<button class="interval-btn" data-step="5" title="对比 30分钟 前">30分钟</button>
+			</div>
+		</div>
+
+		<div class="image-viewport">
+			<!-- Spinner overlay loading indicator -->
+			<div class="spinner-overlay">
+				<div class="spinner"></div>
+				<span>正在加载数据 Loading...</span>
+			</div>
+
+			<div class="viewport-split-wrap" id="viewport-split-wrap">
+				<!-- Left Pane (Original Radar Image) -->
+				<div class="pane-container pane-left" id="pane-left">
+					<div class="overlay-datetime" id="datetime-left"></div>
+					<div class="pane-tag">原始雷达图</div>
+					<img src="#" crossorigin="anonymous" alt="Radar Part Details" id="overlay-image">
+					<canvas id="box-canvas-left" class="box-canvas-overlay"></canvas>
+					<div class="pane-cursor-dot" id="cursor-left"></div>
+				</div>
+				<!-- Right Pane (Diff / Trend Canvas) -->
+				<div class="pane-container pane-right" id="pane-right">
+					<div class="overlay-datetime" id="datetime-right">强度变化趋势 (ΔZ)</div>
+					<div class="pane-tag diff-tag">雨强变化趋势</div>
+					<canvas id="diff-canvas"></canvas>
+					<canvas id="box-canvas-right" class="box-canvas-overlay"></canvas>
+					<div class="pane-cursor-dot" id="cursor-right"></div>
+					<!-- Difference Legend Bar -->
+					<div class="diff-legend" id="diff-legend">
+						<span class="legend-text dec">🟦 减弱</span>
+						<div class="diff-scale-chips">
+							<span class="chip dec-30">-10⁴</span>
+							<span class="chip dec-15">-10³</span>
+							<span class="chip dec-5">-10²</span>
+							<span class="chip zero">0</span>
+							<span class="chip inc-5">+10²</span>
+							<span class="chip inc-15">+10³</span>
+							<span class="chip inc-30">+10⁴</span>
+						</div>
+						<span class="legend-text inc">🟥 增强</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Floating Top-Left Action Controls (Play/Pause, Zoom, Export GIF) -->
+			<div class="zoom-controls">
+				<button class="play-pause" title="播放/暂停">❚❚</button>
+				<button class="zoom-in-btn" title="放大 Zoom In">+</button>
+				<button class="zoom-out-btn" title="缩小 Zoom Out">−</button>
+				<button class="zoom-reset-btn" title="重置 Reset">↺</button>
+				<button class="export-gif-btn" title="导出 GIF 动画">导出 GIF</button>
+			</div>
+		</div>
+		<!-- Progress indicator ticks bar -->
+		<div class="timeline-container">
+			<div class="timeline-bar">
+				<div class="timeline-progress" id="timeline-progress-bar"></div>
+			</div>
+			<div class="timeline-ticks" id="timeline-ticks"></div>
+		</div>
+
+		<!-- Quick Region Selector Modal Popup (Triggered by '/' key) -->
+		<div class="overlay-region-picker" id="region-picker">
+			<div class="picker-header">
+				<span class="picker-title">选择雷达区域 (Select Region)</span>
+				<span class="picker-hint">按 [1-7] 键快速切换 / [Esc] 或 [/] 关闭</span>
+			</div>
+			<div class="picker-grid">
+				<button class="region-pick-btn" data-part="part1"><span class="key-badge">1</span> 西北 (ANWC)</button>
+				<button class="region-pick-btn" data-part="part2"><span class="key-badge">2</span> 华北 (ANCN)</button>
+				<button class="region-pick-btn" data-part="part3"><span class="key-badge">3</span> 东北 (ANEC)</button>
+				<button class="region-pick-btn" data-part="part4"><span class="key-badge">4</span> 西南 (ASWC)</button>
+				<button class="region-pick-btn" data-part="part5"><span class="key-badge">5</span> 华中 (ACCN)</button>
+				<button class="region-pick-btn" data-part="part6"><span class="key-badge">6</span> 华东 (AECN)</button>
+				<button class="region-pick-btn" data-part="part7"><span class="key-badge">7</span> 华南 (ASCN)</button>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Overlay backdrop mask -->
+	<div id="overlay-mask"></div>
+
+	<!-- ES6 Module Entry Point -->
+	<script type="module" src="/src/js/main.js"></script>
+</body>
+
+</html>

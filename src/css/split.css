@@ -1,0 +1,281 @@
+		/* Mode Toolbar for Split / Trend Diff View */
+		.mode-toolbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			width: 100%;
+			box-sizing: border-box;
+			flex-wrap: wrap;
+		}
+
+		.overlay-region-group, .loop-period-group, .mode-btn-group, .interval-select-group {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			flex-wrap: wrap;
+		}
+
+		.toolbar-label {
+			font-size: 0.82rem;
+			color: var(--text-muted);
+			font-weight: 500;
+		}
+
+		.overlay-region-btn, .loop-period-btn, .mode-btn, .interval-btn {
+			background: rgba(255, 255, 255, 0.06);
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			color: var(--text-muted);
+			padding: 5px 10px;
+			border-radius: 6px;
+			font-size: 0.82rem;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all var(--transition-fast);
+		}
+
+		.overlay-region-btn:hover, .loop-period-btn:hover, .mode-btn:hover, .interval-btn:hover {
+			background: rgba(14, 165, 233, 0.15);
+			color: #fff;
+			border-color: var(--primary-color);
+		}
+
+		.overlay-region-btn.active, .loop-period-btn.active, .mode-btn.active, .interval-btn.active {
+			background: var(--primary-color);
+			color: #fff;
+			border-color: var(--primary-color);
+			font-weight: 600;
+			box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+		}
+
+		/* Viewport Split-Screen Layout */
+		.viewport-split-wrap {
+			display: flex;
+			width: 100%;
+			height: 100%;
+			max-height: 100%;
+			position: relative;
+		}
+
+		.pane-container {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.pane-left, .pane-right {
+			flex: 1;
+			width: 100%;
+			height: 100%;
+			position: relative;
+			overflow: hidden;
+			box-sizing: border-box;
+		}
+
+		.pane-right {
+			display: none;
+			background-color: #1a2332;
+		}
+
+		/* Non-disruptive separator overlay to guarantee 100% pixel-perfect pane geometry */
+		.simple_overlay.split-mode .pane-right::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			width: 1px;
+			background: rgba(255, 255, 255, 0.15);
+			z-index: 10;
+			pointer-events: none;
+		}
+
+		.simple_overlay.split-mode .pane-right {
+			display: block;
+		}
+
+		.simple_overlay.diff-mode .pane-left {
+			display: none;
+		}
+
+		.simple_overlay.diff-mode .pane-right {
+			display: block;
+			width: 100%;
+			border-left: none;
+		}
+
+		/* Vertical Split Layout for Portrait Orientation (width / height < 1) */
+		@media (max-aspect-ratio: 1/1) {
+			.simple_overlay.split-mode {
+				height: 98vh;
+				max-height: 98vh;
+			}
+			.simple_overlay.split-mode .viewport-split-wrap {
+				flex-direction: column;
+				overflow: hidden;
+			}
+			.simple_overlay.split-mode .pane-left,
+			.simple_overlay.split-mode .pane-right {
+				width: 100%;
+				height: 50%;
+				flex: 1;
+				min-height: 0;
+				border-left: none;
+			}
+			.simple_overlay.split-mode .pane-right::before {
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: auto;
+				width: 100%;
+				height: 1px;
+			}
+		}
+
+		.simple_overlay.portrait-aspect.split-mode {
+			height: 98vh;
+			max-height: 98vh;
+		}
+		.simple_overlay.portrait-aspect.split-mode .viewport-split-wrap {
+			flex-direction: column;
+			overflow: hidden;
+		}
+		.simple_overlay.portrait-aspect.split-mode .pane-left,
+		.simple_overlay.portrait-aspect.split-mode .pane-right {
+			width: 100%;
+			height: 50%;
+			flex: 1;
+			min-height: 0;
+			border-left: none;
+		}
+		.simple_overlay.portrait-aspect.split-mode .pane-right::before {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: auto;
+			width: 100%;
+			height: 1px;
+		}
+
+		.simple_overlay canvas {
+			display: block;
+			max-width: none;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			cursor: grab;
+			transition: transform 0.1s ease-out;
+			transform-origin: 0 0;
+		}
+
+		.simple_overlay canvas.grabbing {
+			cursor: grabbing;
+		}
+
+		.pane-tag {
+			position: absolute;
+			top: 12px;
+			right: 12px;
+			background: rgba(11, 15, 25, 0.82);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			color: var(--text-muted);
+			padding: 4px 10px;
+			border-radius: 6px;
+			font-size: 0.78rem;
+			font-weight: 600;
+			z-index: 5;
+			pointer-events: none;
+		}
+
+		.pane-tag.diff-tag {
+			color: var(--accent-color);
+			border-color: rgba(16, 185, 129, 0.3);
+		}
+
+		/* Synchronized Pane Cursor Circle Indicator */
+		.pane-cursor-dot {
+			position: absolute;
+			width: 26px;
+			height: 26px;
+			border: 2px solid #0ea5e9;
+			background: rgba(14, 165, 233, 0.25);
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+			pointer-events: none;
+			z-index: 20;
+			display: none;
+			box-shadow: 0 0 12px rgba(14, 165, 233, 0.8), inset 0 0 6px rgba(14, 165, 233, 0.4);
+		}
+
+		.pane-cursor-dot::after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 4px;
+			height: 4px;
+			background: #fff;
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.pane-cursor-dot.visible {
+			display: block;
+		}
+
+		/* Mobile Phone Layout: Move mode-btn-group above timeline-container */
+		@media (max-width: 768px) {
+			#large-overlay {
+				height: 100vh;
+				max-height: 100vh;
+			}
+
+			#large-overlay .mode-toolbar {
+				display: contents;
+			}
+
+			#large-overlay .loop-period-group {
+				order: 1;
+				padding: 8px 50px 0 16px;
+				box-sizing: border-box;
+				width: 100%;
+			}
+
+			#large-overlay .image-viewport {
+				order: 2;
+			}
+
+			#large-overlay .mode-btn-group {
+				order: 3;
+				padding: 0 16px;
+				box-sizing: border-box;
+				width: 100%;
+				display: flex;
+				gap: 8px;
+			}
+
+			#large-overlay .mode-btn-group .mode-btn {
+				flex: 1;
+				text-align: center;
+				padding: 6px 8px;
+			}
+
+			#large-overlay .interval-select-group {
+				order: 4;
+				padding: 0 16px;
+				box-sizing: border-box;
+				width: 100%;
+			}
+
+			#large-overlay .timeline-container {
+				order: 5;
+				padding: 0 16px;
+				box-sizing: border-box;
+			}
+		}
+
